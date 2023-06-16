@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 let renderCount = 0;
 
@@ -11,6 +11,9 @@ type Formvalues = {
     facebook: string;
   };
   phoneNumbers: string[];
+  phNumbers: {
+    number: string;
+  }[];
 };
 
 const YouTubeForm = () => {
@@ -25,11 +28,17 @@ const YouTubeForm = () => {
         facebook: "",
       },
       phoneNumbers: ["", ""],
+      phNumbers: [{ number: " " }],
     },
   });
 
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
+
+  const { fields, append, remove } = useFieldArray({
+    name: "phNumbers",
+    control,
+  });
 
   renderCount++;
 
@@ -68,7 +77,7 @@ const YouTubeForm = () => {
               validate: {
                 notAdmin: (fieldValue) => {
                   return (
-                    fieldValue !== "admin@gmail.com" ||
+                    fieldValue !== "admin@percel.com" ||
                     "Enter a different email address "
                   );
                 },
@@ -117,6 +126,31 @@ const YouTubeForm = () => {
             id="secondary-phone"
             {...register("phoneNumbers.1")}
           />
+        </div>
+
+        <div>
+          <label>List of phone numbers</label>
+          {/* wrap all the phNumbers fileds  */}
+          <div>
+            {fields.map((field, index) => {
+              return (
+                <div className="form-control" key={field.id}>
+                  <input
+                    type="text"
+                    {...register(`phNumbers.${index}.number` as const)}
+                  />
+                  {index > 0 && (
+                    <button type="button" onClick={() => remove(index)}>
+                      Remove
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+            <button type="button" onClick={() => append({ number: "" })}>
+              Add Phone Number
+            </button>
+          </div>
         </div>
         <button>Submit</button>
       </form>
