@@ -1,5 +1,6 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import { useEffect } from "react";
 let renderCount = 0;
 
 type Formvalues = {
@@ -36,23 +37,33 @@ const YouTubeForm = () => {
     },
   });
 
-  const { register, control, handleSubmit, formState } = form;
+  const { register, control, handleSubmit, formState, watch } = form;
   const { errors } = formState;
 
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
     control,
   });
+  //for multiple vqalue watch use array for single value watch use string for all use only watch()
+  const watchUsername = watch(["username", "email"]);
 
   renderCount++;
 
   const onSubmit = (data: Formvalues) => {
     console.log("Form submitted", data);
   };
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>Count Render Hook Form ({renderCount / 2})</h1>
+        <h1>Watch value: {watchUsername}</h1>
         <div className="form-control">
           <label htmlFor="username">UserName</label>
           <input
