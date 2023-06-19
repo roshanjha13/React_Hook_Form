@@ -84,7 +84,7 @@ const YouTubeForm = () => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>Count Render Hook Form ({renderCount / 2})</h1>
-        <h1>Watch value: {watchUsername}</h1>
+        {/* <h1>Watch value: {watchUsername}</h1> */}
         <div className="form-control">
           <label htmlFor="username">UserName</label>
           <input
@@ -141,7 +141,14 @@ const YouTubeForm = () => {
         </div>
         <div className="form-control">
           <label htmlFor="twitter">Twitter</label>
-          <input type="text" id="twitter" {...register("social.twitter")} />
+          <input
+            type="text"
+            id="twitter"
+            {...register("social.twitter", {
+              disabled: watch("channel") === "",
+              required: "Enter Twitter Profile",
+            })}
+          />
         </div>
         <div className="form-control">
           <label htmlFor="facebook">Facebook</label>
