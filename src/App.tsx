@@ -1,9 +1,10 @@
-import YouTubeForm from "./components/YouTubeForm";
+// import YouTubeForm from "./components/YouTubeForm";
 import "./App.css";
+import { YupYouTubeForm } from "./components/YupYoutubeForm";
 function App() {
   return (
     <div>
-      <YouTubeForm />
+      <YupYouTubeForm />
     </div>
   );
 }
