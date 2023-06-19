@@ -1,6 +1,6 @@
 import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-// import { useEffect } from "react";
+import { useEffect } from "react";
 let renderCount = 0;
 
 type Formvalues = {
@@ -45,6 +45,7 @@ const YouTubeForm = () => {
     watch,
     getValues,
     setValue,
+    reset,
   } = form;
   const {
     errors,
@@ -58,7 +59,7 @@ const YouTubeForm = () => {
     submitCount,
   } = formState;
 
-  // console.log(touchedFields, dirtyFields, isDirty, isValid);
+  console.log(touchedFields, dirtyFields, isDirty, isValid);
   console.log({ isSubmitting, isSubmitted, isSubmitSuccessful, submitCount });
 
   const { fields, append, remove } = useFieldArray({
@@ -88,6 +89,12 @@ const YouTubeForm = () => {
       shouldTouch: true,
     });
   };
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   // useEffect(() => {
   //   const subscription = watch((value) => {
@@ -213,6 +220,9 @@ const YouTubeForm = () => {
         </div>
 
         <button disabled={!isDirty || !isValid || isSubmitted}>Submit</button>
+        {/* <button type="button" onClick={() => reset()}>
+          Reset
+        </button> */}
         <button type="button" onClick={handleGetValues}>
           Get values
         </button>
