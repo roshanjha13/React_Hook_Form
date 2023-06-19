@@ -46,9 +46,20 @@ const YouTubeForm = () => {
     getValues,
     setValue,
   } = form;
-  const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
+  const {
+    errors,
+    touchedFields,
+    dirtyFields,
+    isDirty,
+    isValid,
+    isSubmitting,
+    isSubmitted,
+    isSubmitSuccessful,
+    submitCount,
+  } = formState;
 
-  console.log(touchedFields, dirtyFields, isDirty, isValid);
+  // console.log(touchedFields, dirtyFields, isDirty, isValid);
+  console.log({ isSubmitting, isSubmitted, isSubmitSuccessful, submitCount });
 
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
@@ -105,31 +116,7 @@ const YouTubeForm = () => {
         </div>
         <div className="form-control">
           <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            {...register("email", {
-              pattern: {
-                value:
-                  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                message: "invalid email form",
-              },
-              validate: {
-                notAdmin: (fieldValue) => {
-                  return (
-                    fieldValue !== "admin@percel.com" ||
-                    "Enter a different email address "
-                  );
-                },
-                notBlackListed: (fieldVale) => {
-                  return (
-                    fieldVale.endsWith("baddomain.fgfn") ||
-                    "this domain is not supported"
-                  );
-                },
-              },
-            })}
-          />
+          <input type="email" id="email" {...register("email")} />
           <p className="error">{errors.email?.message}</p>
         </div>
         <div className="form-control">
@@ -225,7 +212,7 @@ const YouTubeForm = () => {
           <p className="error">{errors.dob?.message}</p>
         </div>
 
-        <button disabled={!isDirty || !isValid}>Submit</button>
+        <button disabled={!isDirty || !isValid || isSubmitted}>Submit</button>
         <button type="button" onClick={handleGetValues}>
           Get values
         </button>
