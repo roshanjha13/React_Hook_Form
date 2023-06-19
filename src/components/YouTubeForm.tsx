@@ -35,6 +35,7 @@ const YouTubeForm = () => {
       age: 0,
       dob: new Date(),
     },
+    mode: "all",
   });
 
   const {
